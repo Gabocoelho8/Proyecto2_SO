@@ -6,6 +6,8 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaz.Interfaz;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class IA extends Thread{
     
@@ -16,6 +18,7 @@ public class IA extends Thread{
     private Integer totalVictories_A_Int = 0;
     private Integer totalVictories_RS_Int = 0;
     private String Status = "";
+    Queue<Object> winnersList = new LinkedList<>();
     Random rand = new Random();
         
     public IA(Semaphore m, Colas c, Interfaz i){
@@ -34,21 +37,23 @@ public class IA extends Thread{
                     sleep(1200);
                     initCount += 1;
                 }
-                this.mutex.acquire();
-                Status = "Decidiendo";
-                this.GUI.setStatus_IA(Status);
-                sleep(this.GUI.time * 1000);
-                Status = "Anunciando";
-                this.GUI.setStatus_IA(Status);
-                sleep(250);
-                battles();
-                updateCounters();
-                changeCola();
-                removeCola4();
-                this.mutex.release();
-                Status = "Esperando";
-                this.GUI.setStatus_IA(Status);
-                sleep(1200);
+                else{
+                    this.mutex.acquire();
+                    Status = "Decidiendo";
+                    this.GUI.setStatus_IA(Status);
+                    sleep(this.GUI.time * 1000);
+                    Status = "Anunciando";
+                    this.GUI.setStatus_IA(Status);
+                    sleep(250);
+                    battles();
+                    updateCounters();
+                    changeCola();
+                    removeCola4();
+                    this.mutex.release();
+                    Status = "Esperando";
+                    this.GUI.setStatus_IA(Status);
+                    sleep(1200);
+                }
             } catch (InterruptedException ex) {
                 Logger.getLogger(IA.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -293,11 +298,15 @@ public class IA extends Thread{
             //GANA EL QUE TENGA MAS PUNTOS COMBINADOS---------------------------
             if(battlePoints_A > battlePoints_RS){
                 this.GUI.setWinner(contestant_A);
+                winnersList.add(contestant_A);
+                this.GUI.setWinnersList(winnersList);
                 totalVictories_A_Int += 1;
                 this.GUI.setTotalVictories_A(totalVictories_A_Int);
             }
             else if (battlePoints_RS > battlePoints_A){
                 this.GUI.setWinner(contestant_RS);
+                winnersList.add(contestant_RS);
+                this.GUI.setWinnersList(winnersList);
                 totalVictories_RS_Int += 1;
                 this.GUI.setTotalVictories_RS(totalVictories_RS_Int);
             }
@@ -306,11 +315,15 @@ public class IA extends Thread{
                 int draw = rand.nextInt(1);
                 if(draw == 0){
                     this.GUI.setWinner(contestant_A);
+                    winnersList.add(contestant_A);
+                this.GUI.setWinnersList(winnersList);
                     totalVictories_A_Int += 1;
                     this.GUI.setTotalVictories_A(totalVictories_A_Int);
                 }
                 else{
                     this.GUI.setWinner(contestant_RS);
+                    winnersList.add(contestant_RS);
+                    this.GUI.setWinnersList(winnersList);
                     totalVictories_RS_Int += 1;
                     this.GUI.setTotalVictories_RS(totalVictories_RS_Int);
                 }
