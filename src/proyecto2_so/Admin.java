@@ -102,7 +102,7 @@ public class Admin extends Thread{
     public void createCharacters(){
         int newCharacters = rand.nextInt(100);
         
-        if(newCharacters < 80 && this.colas.numBattles % 2 == 0){
+        if(newCharacters < 80 && this.colas.numBattles != 0 && this.colas.numBattles % 2 == 0){
                 int nameIndex_RS = rand.nextInt(8);
                 int ability_RS = rand.nextInt(10 - 1 + 1) + 1;
                 int exp_RS = rand.nextInt(10 - 1 + 1) + 1;
