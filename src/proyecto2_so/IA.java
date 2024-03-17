@@ -31,24 +31,24 @@ public class IA extends Thread{
                 if(initCount == 0){
                     Status = "Esperando";
                     this.GUI.setStatus_IA(Status);
-                    sleep(2000);
+                    sleep(1200);
                     initCount += 1;
                 }
                 this.mutex.acquire();
                 Status = "Decidiendo";
                 this.GUI.setStatus_IA(Status);
-                sleep(500);
+                sleep(this.GUI.time * 1000);
+                Status = "Anunciando";
+                this.GUI.setStatus_IA(Status);
+                sleep(250);
                 battles();
                 updateCounters();
                 changeCola();
                 removeCola4();
-                Status = "Anunciando";
-                this.GUI.setStatus_IA(Status);
-                sleep(this.GUI.time * 1000);
                 this.mutex.release();
                 Status = "Esperando";
                 this.GUI.setStatus_IA(Status);
-                sleep(1250);
+                sleep(1200);
             } catch (InterruptedException ex) {
                 Logger.getLogger(IA.class.getName()).log(Level.SEVERE, null, ex);
             }
